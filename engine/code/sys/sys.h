@@ -17,7 +17,7 @@ void *Sys_Alloc( size_t size, cbool aligned );
 void Sys_Free( void *ptr );
 void *Sys_MemCpy( void *dst, const void *src, size_t size );
 
-cbool Sys_PumpMessages( sysState_t *state );
+cbool Sys_PumpMessages();
 
 void Sys_Sleep( unsigned long ms );
 

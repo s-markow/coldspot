@@ -6,13 +6,13 @@
 typedef struct {
     HWND hWnd;
     HINSTANCE hInstance;
-} win32Vars_t;
+} winState_t;
 
-win32Vars_t win32Vars;
+winState_t winState;
 
 void Sys_Init( sysState_t *state )
 {
-    // state->internalPtr
+    state->internalPtr = &winState;
 }
 
 #endif

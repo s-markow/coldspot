@@ -3,4 +3,11 @@
 
 #include <windows.h>
 
+typedef struct {
+    HWND hWnd;
+    HINSTANCE hInstance;
+} winState_t;
+
+winState_t winState;
+
 #endif

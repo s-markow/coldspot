@@ -1,12 +1,12 @@
-#include <windows.h>
+#include "win32shared.h"
 
 #ifdef main
 #undef main
 #endif
 
-extern HINSTANCE g_hInstance;
 int main( int argc, char **argv );
 
+// main entry point for win32 applications
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine, int nCmdShow )
 {
    int argc;
@@ -14,6 +14,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLin
 
    (void)hPrevInstance;
 
-   g_hInstance = hInstance;
+   winState.hInstance = hInstance;
+   argc = 0; // tmp
+   argv = NULL; // tmp
+
    return main( argc, argv );
 }

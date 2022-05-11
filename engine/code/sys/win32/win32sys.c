@@ -1,19 +1,11 @@
 #include "../../shared.h"
 
 #ifdef CS_WIN32_DEFINED
+#include "win32shared.h"
 #include "../sys.h"
 #include "../core/io/logger.h"
 
 #include <stdlib.h>
-
-#include <windows.h>
-
-typedef struct {
-    HWND hWnd;
-    HINSTANCE hInstance;
-} winState_t;
-
-winState_t winState;
 
 LRESULT CALLBACK Main_WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
 

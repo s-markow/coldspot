@@ -1,7 +1,9 @@
 #ifndef __SHARED_H
 #define __SHARED_H
 
-#define CS_WIN32_DEFINED    ( WIN32 || _WIN32 || __WIN32__ )
+#if defined( WIN32 ) || defined( _WIN32 ) || defined( __WIN32__ )
+#define CS_WIN32_DEFINED
+#endif
 
 #if defined( CSEXPORT )
 #define CSAPI __declspec( dllexport )

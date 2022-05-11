@@ -16,7 +16,7 @@ void Sys_Quit( sysState_t *state );
 void *Sys_Alloc( size_t size, cbool aligned );
 void Sys_Free( void *ptr );
 void *Sys_MemCpy( void *dst, const void *src, size_t size );
-void *Sys_MemSet() void *str, int c, size_t n );
+void *Sys_MemSet( void *str, int c, size_t n );
 
 cbool Sys_PumpMessages();
 

@@ -18,7 +18,7 @@ void Sys_Free( void *ptr );
 void *Sys_MemCpy( void *dst, const void *src, size_t size );
 void *Sys_MemSet( void *str, int c, size_t n );
 
-cbool Sys_PumpMessages();
+void Sys_PumpEvents();
 
 void Sys_Sleep( unsigned long ms );
 double Sys_GetTime();

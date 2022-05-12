@@ -8,6 +8,5 @@ typedef struct {
     HINSTANCE hInstance;
 } winState_t;
 
-winState_t winState;
 
 #endif

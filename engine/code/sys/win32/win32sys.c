@@ -58,7 +58,7 @@ void Sys_PumpEvents()
 
 const char *CLASS_NAME  = "CS Class";
 
-void Sys_CreateWindow( sysState_t *state, int width, int height )
+cbool Sys_CreateWindow( sysState_t *state, int width, int height )
 {
     WNDCLASS wc;
     RECT winRect;
@@ -75,7 +75,7 @@ void Sys_CreateWindow( sysState_t *state, int width, int height )
     if ( !RegisterClass(&wc) ) {
         //Log_Printf
         printf( "Error: register class ");
-        return;
+        return cfalse;
     }
 
     winRect.left = 0;
@@ -99,10 +99,13 @@ void Sys_CreateWindow( sysState_t *state, int width, int height )
     
     if ( !winState.hWnd ) {
         //Log_Printf
+        return cfalse;
     }
 
     ShowWindow( winState.hWnd, SW_SHOW );
     // QueryPerformanceFrequency( &freq );
+    
+    return ctrue;
 }
 
 void Sys_Quit( sysState_t *state )

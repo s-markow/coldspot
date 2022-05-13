@@ -54,10 +54,14 @@ void Sys_PumpEvents()
     }
 }
 
-void Sys_Init( sysState_t *state )
+#include <stdio.h> //tmp
+
+const char *CLASS_NAME  = "CS Class";
+
+void Sys_CreateWindow( sysState_t *state, int width, int height )
 {
     WNDCLASS wc;
-    RECT wndRect;
+    RECT winRect;
     DWORD dwStyle;
     // LARGE_INTEGER freq;
 
@@ -66,22 +70,32 @@ void Sys_Init( sysState_t *state )
     wc.hInstance        = winState.hInstance;
     wc.hCursor          = LoadCursor( NULL, IDC_ARROW );
     wc.hIcon            = LoadIcon( winState.hInstance, IDI_APPLICATION );
-    wc.lpszClassName    = "CS Class";
+    wc.lpszClassName    = CLASS_NAME;
 
     if ( !RegisterClass(&wc) ) {
         //Log_Printf
+        printf( "Error: register class ");
+        return;
     }
 
-    wndRect.left = 0;
-    wndRect.top = 0;
-    wndRect.right = 800;
-    wndRect.bottom = 600;
+    winRect.left = 0;
+    winRect.top = 0;
+    winRect.right = width;
+    winRect.bottom = height;
 
     dwStyle = WS_OVERLAPPEDWINDOW;
-    AdjustWindowRect( &wndRect, dwStyle, FALSE );
+    AdjustWindowRect( &winRect, dwStyle, FALSE );
 
-    winState.hWnd = CreateWindow( 
-        "CS Class", "Test Window", dwStyle, 0, 0, 800, 600, NULL, NULL, winState.hInstance, NULL ); 
+    winState.hWnd = CreateWindowEx(
+        0, 
+        CLASS_NAME,
+        "Test Window",
+        dwStyle,
+        200, 200, width, height,
+        NULL,
+        NULL,
+        winState.hInstance,
+        NULL ); 
     
     if ( !winState.hWnd ) {
         //Log_Printf
@@ -96,6 +110,8 @@ void Sys_Quit( sysState_t *state )
     if ( winState.hWnd ) {
         DestroyWindow( winState.hWnd );
     }
+    // A DLL must explicitly unregister its classes when it is unloaded.
+    UnregisterClass( CLASS_NAME, winState.hInstance );
 }
 
 LRESULT CALLBACK Main_WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )

@@ -9,7 +9,7 @@ typedef struct {
     void *internalPtr;
 } sysState_t;
 
-void Sys_CreateWindow( sysState_t *state, int width, int height );
+cbool Sys_CreateWindow( sysState_t *state, int width, int height );
 
 void Sys_Quit( sysState_t *state );
 

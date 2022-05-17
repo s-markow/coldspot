@@ -23,4 +23,9 @@ typedef enum {
     cfalse, ctrue
 } cbool;
 
+
+
+#define COLOR_ESCAPE_CHAR       '^'
+#define IsColoredText(str)      ( str && *(str) == COLOR_ESCAPE_CHAR && *((str)+1) && *((str)+1) != COLOR_ESCAPE_CHAR )
+
 #endif

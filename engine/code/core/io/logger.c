@@ -1,40 +1,57 @@
 #include "logger.h"
 #include "../assert.h"
 
+#include "sys/sys.h"
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 
 static const char *LOG_STRING_LABEL[6] = {
-    "[FATAL ERROR]: ",
-    "[ERROR]: ",
-    "[WARNING]: ",
-    "[MESSAGE]: ",
-    "[DEBUG]: ",
-    "[TRACE]: "
+    "[FATAL ERROR]",
+    "[ERROR]",
+    "[WARNING]",
+    "[MESSAGE]",
+    "[DEBUG]",
+    "[TRACE]"
 };
 
 void Log_Init()
 {
-
+ // windowed systems vs non-windowed systems
+#if defined ( CS_WIN32_DEFINED ) || defined ( CS_LINUX_DEFINED )
+    Sys_CreateConsole();
+#else
+#endif
 }
 
 void Log_Quit()
 {
-
+ // windowed systems vs non-windowed systems
+#if defined ( CS_WIN32_DEFINED ) || defined ( CS_LINUX_DEFINED )
+    Sys_QuitConsole();
+#else
+#endif
 }
 
-void Log_Printf( errType_t errType , const char *fmt, ... )
+void Log_Printf( errType_t errType, const char *fmt, ... )
 {
-    char buffer[10000];
-
+    #define BUFFER_SIZE 10000
+    char buffer[BUFFER_SIZE];
+    char out[BUFFER_SIZE];
     va_list va_args;
+
+    Sys_Memset( buffer, 0, BUFFER_SIZE );
+    Sys_Memset( out, 0, BUFFER_SIZE );
+
     va_start( va_args, fmt );
-    vsnprintf( buffer, 10000, fmt, va_args );
+    vsnprintf( buffer, BUFFER_SIZE, fmt, va_args );
     va_end( va_args );
 
-    // tmp
-    printf( "%s%s\n", LOG_STRING_LABEL[errType], buffer );
+    sprintf( out, "%s: %s", LOG_STRING_LABEL[errType], buffer );
+    Sys_ConsolePrint( out );
+
+    #undef BUFFER_SIZE
 }
 
 void __assert( const char *expr, const char *msg, const char *file, int line )

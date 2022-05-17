@@ -8,5 +8,6 @@ typedef struct {
     HINSTANCE hInstance;
 } winState_t;
 
+extern winState_t winState;
 
 #endif

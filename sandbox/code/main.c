@@ -1,14 +1,16 @@
 #include <core/interface.h>
-#include <stdio.h>
+#include <sys/sys.h>
 
-// csConfig_t config;
+csConfig_t config;
 
 int main( int argc, char **argv )
 {
-    config.winStartupW = 200;
-    config.winStartupH = 200;
-    // CS_Init( &config );
-    // CS_Run();
+    config.winTitle = "Test";
+    config.winStartupW = 800;
+    config.winStartupH = 600;
+    CS_Init( &config );
+    CS_Run();
+    CS_Quit();
 
     return 0;
 }

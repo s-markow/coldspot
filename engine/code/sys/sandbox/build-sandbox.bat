@@ -5,7 +5,7 @@ set target=sandbox
 set cflags=-g
 set includes=-Icode -I../engine/code/
 set lflags=-L../engine/bin/ -lcs-engine.lib
-set defines=-D_DEBUG -DCSIMPORT
+set defines=-D_DEBUG
 
 set cfiles=
 for /R %%f in (*.c) do (

@@ -4,7 +4,7 @@ setlocal EnableDelayedExpansion
 set includes=-Icode -I%VULKAN_SDK%/include
 set libs=-L%VULKAN_SDK%/lib
 set cflags=-g -shared -Wvarargs -Wall -Werror %includes%
-set lflags=-luser32 -lgdi32 -lvulkan-1 %libs% -Xlinker /SUBSYSTEM:WINDOWS
+set lflags=-luser32 -lgdi32 -lopengl32 -lvulkan-1 %libs% -Xlinker /SUBSYSTEM:WINDOWS
 set defines=-D_DEBUG -DCSEXPORT -D_CRT_SECURE_NO_WARNINGS
 set target=cs-engine
 set cfiles=

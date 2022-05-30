@@ -1,5 +1,5 @@
 #include "logger.h"
-#include "../assert.h"
+#include "../c_assert.h"
 
 #include "sys/sys.h"
 

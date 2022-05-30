@@ -5,10 +5,7 @@
 #include "win32shared.h"
 #include "core/io/logger.h"
 
-#include <vulkan/vulkan.h>
-#include <vulkan/vulkan_win32.h>
-
-#include "../vulkandefs.h"
+#include "../../renderer/vulkan/vulkandefs.h"
 
 extern winState_t winState;
 
@@ -28,6 +25,8 @@ cbool Sys_CreateVulkanSurface( vulkanContext_t *context )
         return cfalse;
     }
 
+    context->surface = vkSurface;
+    
     return ctrue;
 }
 

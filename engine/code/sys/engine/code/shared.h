@@ -16,7 +16,7 @@
 #ifdef CS_WIN32_DEFINED
 #if defined( CSEXPORT )
 #define CSAPI __declspec( dllexport )
-#elif defined( CSIMPORT )
+#else
 #define CSAPI __declspec( dllimport )
 #endif
 #else
@@ -27,10 +27,18 @@ typedef enum {
     cfalse, ctrue
 } cbool;
 
-#define ARRAY_GET_LE_WORD( ptr )      ( (ptr)[0] | (ptr)[1] << 8 )
-#define ARRAY_GET_LE_LONG( ptr )      ( (ptr)[0] | (ptr)[1] << 8 | (ptr)[2] << 16 | (ptr)[3] << 24 )
+#define ARRAY_GET_LE_WORD( ptr )      ( (short)(ptr)[0] | (short)(ptr)[1] << 8 )
+#define ARRAY_GET_LE_LONG( ptr ) \
+    ( (long)(ptr)[0] | (long)(ptr)[1] << 8 | (long)(ptr)[2] << 16 | (long)(ptr)[3] << 24 )
 #define ARRAY_GET_LE_LLONG( ptr )  \
-    ((ptr)[0] | (ptr)[1] << 8 | (ptr)[2] << 16 | (ptr)[3] << 24 | (ptr)[4] << 32 | (ptr)[5] << 40 | (ptr)[6] << 48 | (ptr)[7] << 56)
+    ((long long)(ptr)[0] \
+    | (long long)(ptr)[1] << 8 \
+    | (long long)(ptr)[2] << 16 \
+    | (long long)(ptr)[3] << 24 \
+    | (long long)(ptr)[4] << 32 \
+    | (long long)(ptr)[5] << 40 \
+    | (long long)(ptr)[6] << 48 \
+    | (long long)(ptr)[7] << 56)
 
 #define COLOR_ESCAPE_CHAR       '^'
 #define IsColoredText(str)      ( str && *(str) == COLOR_ESCAPE_CHAR && *((str)+1) && *((str)+1) != COLOR_ESCAPE_CHAR )

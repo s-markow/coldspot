@@ -3,7 +3,7 @@
 #ifdef CS_WIN32_DEFINED
 
 #include "../sys.h"
-#include "core/memory.h"
+#include "core/c_memory.h"
 
 #include <string.h>
 
@@ -43,7 +43,9 @@ void Sys_ConsolePrint( const char *msg )
     // HDC hDC = GetDC( g_hScrollBuffer );
     // SetTextColor( hDC, RGB(255, 0, 0) );
 
+    // SetTextColor(hDC, RGB(255, 0, 0));
 	SendMessage( g_hScrollBuffer, EM_REPLACESEL, 0, (LPARAM)buffer );
+	// SendMessage( g_hScrollBuffer, WM_SETFONT, WPARAM(hfont), 0);    
     // ReleaseDC( g_hScrollBuffer, hDC );
 
     #undef BUFFER_SIZE
@@ -59,8 +61,8 @@ static LONG WINAPI ConsoleWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         // case WM_PAINT:      
         //     return 0;
         case WM_CTLCOLORSTATIC:
-            // SetBkColor( (HDC)wParam, RGB( 0x00, 0x00, 0x60 ) );
-            // SetTextColor( (HDC)wParam, RGB(255, 0, 0) );
+            SetBkColor( (HDC)wParam, RGB( 0x00, 0x00, 0x60 ) );
+            SetTextColor( (HDC)wParam, RGB(255, 0, 0) );
             return 0;
         case WM_CLOSE:
             PostQuitMessage( 0 );

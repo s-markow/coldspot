@@ -14,4 +14,8 @@ extern winState_t winState;
 
 cbool Sys_CreateVulkanSurface();
 
+// win32gl.c
+void Win32GL_Shutdown();
+cbool Win32GL_Setup();
+
 #endif

@@ -20,7 +20,7 @@ void CS_Init( csConfig_t *config )
 
  // windowed systems vs non-windowed systems
 #if defined ( CS_WIN32_DEFINED ) || defined ( CS_LINUX_DEFINED )
-    if ( !Sys_CreateWindow( &csState.sysState, config->winStartupW-20, config->winStartupH-20, config->winTitle ) ) {
+    if ( !Sys_CreateWindow( &csState.sysState, config->winStartupW-20, config->winStartupH-20, config->winTitle, cfalse ) ) {
         Log_Printf( ERRTYPE_FATAL, "CS_Init: Can't create main window.\n" );
         return;
     }

@@ -4,14 +4,10 @@
 #include "../sys.h"
 #include "resource.h"
 #include "core/io/logger.h"
-#include "core/memory.h"
+#include "core/c_memory.h"
 #include "win32shared.h"
-#include "../vulkandefs.h"
 
 #include <stdlib.h>
-
-// static double clkFreq;
-// static LARGE_INTEGER startTime;
 
 // static vulkanContext_t context;
 
@@ -48,22 +44,27 @@ void Sys_Sleep( unsigned long ms )
     Sleep( ms );
 }
 
-// LARGE_INTEGER startTime;
+static LARGE_INTEGER startTime;
+static double clkFrequency;
 
-double Sys_GetTime()
+void Sys_InitTime()
 {
-    // LARGE_INTEGER now;
-    // LARGE_INTEGER freq;
-    // double clkPeriod;
+    LARGE_INTEGER freq;
+    QueryPerformanceFrequency( &freq );
+    QueryPerformanceFrequency( &startTime );
+    clkFrequency = (double)1 / freq.QuadPart;
+}
 
-    // if ( !frequency ) {
-    //     QueryPerformanceFrequency( &freq );
-    //     clkPeriod = 1.0 / (double)freq.QuadPart;
-    //     // QueryPerformanceFrequency( &startTime );
-    // }
-    // QueryPerformanceCounter( &now );
-    // return (double)now.QuadPart * clkPeriod;
-    return 0.0;
+double Sys_GetTimeMS()
+{
+    LARGE_INTEGER now;
+
+    if ( !clkFrequency ) {
+        Sys_InitTime();
+    }
+    QueryPerformanceCounter( &now );
+
+    return (double)now.QuadPart * clkFrequency;
 }
 
 void Sys_PumpEvents()
@@ -78,7 +79,7 @@ void Sys_PumpEvents()
 
 const char *CLASS_NAME  = "CS Class";
 
-cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle )
+cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle, cbool fullscreen )
 {
     // memoryTag_t t; // tmp
 
@@ -86,6 +87,7 @@ cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle
         WNDCLASS wc;
         RECT winRect;
         DWORD dwStyle;
+        DWORD exStyle;
 
         // for ( int i = 0; i < 100; i++ ) {
         //     Log_Printf( ERRTYPE_MESSAGE, "hel^3lo %d\n", i );
@@ -114,11 +116,18 @@ cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle
         winRect.right = width;
         winRect.bottom = height;
 
-        dwStyle = WS_OVERLAPPEDWINDOW;
-        AdjustWindowRect( &winRect, dwStyle, FALSE );
+        if ( fullscreen ) {
+            exStyle = WS_EX_TOPMOST;
+            dwStyle = WS_POPUP | WS_VISIBLE;
+        }
+        else {
+            exStyle = 0;
+            dwStyle = WS_OVERLAPPEDWINDOW; //WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_VISIBLE;
+            AdjustWindowRect( &winRect, dwStyle, FALSE );
+        }
 
         winState.hWnd = CreateWindowEx(
-            0, 
+            exStyle, 
             CLASS_NAME,
             winTitle,
             dwStyle,
@@ -135,7 +144,7 @@ cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle
 
         ShowWindow( winState.hWnd, SW_SHOW );
 
-        // Sys_CreateVulkanSurface( &context );
+        Win32GL_Setup(); // tmp
 
         return ctrue;
     }
@@ -150,6 +159,7 @@ void Sys_Clean( sysState_t *state )
 {
     Log_Printf( ERRTYPE_MESSAGE, "quitting...\n" );
     Sleep( 2000 );
+    Win32GL_Shutdown();
     if ( winState.hWnd ) {
         DestroyWindow( winState.hWnd );
         winState.hWnd = NULL;

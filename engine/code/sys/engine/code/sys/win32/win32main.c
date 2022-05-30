@@ -11,17 +11,20 @@
 // #undef main
 // #endif
 
-// extern winState_t winState;
+// #include <stdio.h>
 
-// extern csConfig_t csConfig;
+// #ifdef __GNUC__
+// #  ifndef _stdcall
+// #    define _stdcall  __attribute__((stdcall))
+// #  endif
+// #endif
 
+// // extern int main( int argc, char **argv );
 
-// int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
+// int _stdcall WinMain ( HINSTANCE hInstance, HINSTANCE hPrevInstance, char *lpszCmdLine, int nCmdShow )
 // {
-//    winState.hInstance = hInstance;
-
-//    printf( "winmain\n" );
-//    return 0;
+//     printf( "test\n" );
+//     // return main (__argc, __argv);
 // }
 
 #endif

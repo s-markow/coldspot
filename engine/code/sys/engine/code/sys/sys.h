@@ -17,7 +17,7 @@ typedef struct {
 void Sys_ConsolePrint( const char *msg );
 void Sys_CreateConsole();
 void Sys_QuitConsole();
-cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle );
+cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle, cbool fullscreen );
 #endif
 
 // create some context

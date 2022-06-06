@@ -17,7 +17,7 @@ typedef struct {
 void Sys_ConsolePrint( const char *msg );
 void Sys_CreateConsole();
 void Sys_QuitConsole();
-cbool Sys_CreateWindow( sysState_t *state, int width, int height, char *winTitle );
+cbool Sys_CreateWindow( sysState_t *state, int x, int y, int width, int height, char *winTitle, cbool fullscreen );
 #endif
 
 // create some context
@@ -29,7 +29,7 @@ void Sys_Clean( sysState_t *state );
 void *Sys_Alloc( size_t size, cbool aligned );
 void Sys_Free( void *ptr, cbool aligned );
 void *Sys_MemCpy( void *dst, const void *src, size_t size );
-void *Sys_Memset( void *str, int c, size_t n );
+void *Sys_MemSet( void *str, int c, size_t n );
 
 void Sys_PumpEvents();
 

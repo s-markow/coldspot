@@ -3,6 +3,8 @@
 #ifdef CS_WIN32_DEFINED
 
 #include "../sys.h"
+#include "core/c_memory.h"
+
 #include <string.h>
 
 // #define EDIT_ID			100
@@ -12,13 +14,15 @@
 HWND g_hConsoleWin;
 HWND g_hScrollBuffer;
 
+HBRUSH g_hbrBgScrollBuffer;
+
 void Sys_ConsolePrint( const char *msg )
 {
     #define BUFFER_SIZE     10000
     char buffer[BUFFER_SIZE];
     char *bufferPtr = buffer;
 
-    Sys_Memset( buffer, 0, BUFFER_SIZE );
+    C_MemSet( buffer, 0, BUFFER_SIZE );
     for ( int i = 0; msg[i] && ( bufferPtr - buffer ) < sizeof( buffer ) - 1; i++ ) {
         if ( msg[i] == '\n' ) {
             bufferPtr[0] = '\r';
@@ -36,7 +40,13 @@ void Sys_ConsolePrint( const char *msg )
 
 	// SendMessage( g_hScrollBuffer, EM_LINESCROLL, 0, 0xffff );
 	// SendMessage( g_hScrollBuffer, EM_SCROLLCARET, 0, 0 );
+    // HDC hDC = GetDC( g_hScrollBuffer );
+    // SetTextColor( hDC, RGB(255, 0, 0) );
+
+    // SetTextColor(hDC, RGB(255, 0, 0));
 	SendMessage( g_hScrollBuffer, EM_REPLACESEL, 0, (LPARAM)buffer );
+	// SendMessage( g_hScrollBuffer, WM_SETFONT, WPARAM(hfont), 0);    
+    // ReleaseDC( g_hScrollBuffer, hDC );
 
     #undef BUFFER_SIZE
 }
@@ -46,7 +56,14 @@ static LONG WINAPI ConsoleWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     switch ( uMsg ) {
         case WM_CREATE:
             // SetBkColor( (HDC)wParam, RGB( 0x00, 0x00, 0xb0 ) );
+            g_hbrBgScrollBuffer = CreateSolidBrush( RGB( 0x00, 0x00, 0x60 ) );
             return 0;
+        // case WM_PAINT:      
+        //     return 0;
+        // case WM_CTLCOLORSTATIC:
+        //     SetBkColor( (HDC)wParam, RGB( 0x00, 0x00, 0x60 ) );
+        //     SetTextColor( (HDC)wParam, RGB(255, 0, 0) );
+        //     return 0;
         case WM_CLOSE:
             PostQuitMessage( 0 );
             return 0;
@@ -65,11 +82,11 @@ void Sys_CreateConsole()
     
     hInstance = GetModuleHandle( NULL );
 
-    memset( &wc, 0, sizeof( wc ) );
+    C_MemSet( &wc, 0, sizeof( wc ) );
     wc.lpfnWndProc      = (WNDPROC)ConsoleWndProc;
     wc.hInstance        = hInstance;
     wc.hCursor          = LoadCursor( NULL, IDC_ARROW );
-    wc.hbrBackground    = (void*)COLOR_WINDOW;
+    wc.hbrBackground    = (void*)( COLOR_WINDOW + 1);
     wc.hIcon            = LoadIcon( hInstance, IDI_APPLICATION );
     wc.lpszClassName    = "Logger Console";
 
@@ -102,7 +119,7 @@ void Sys_CreateConsole()
         return;
     }
 
-   	g_hScrollBuffer = CreateWindow( 
+   	g_hScrollBuffer = CreateWindow(
             "edit",
             NULL,
             WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_BORDER | ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
@@ -126,6 +143,7 @@ void Sys_CreateConsole()
 void Sys_QuitConsole()
 {
     if ( g_hConsoleWin ) {
+        CloseWindow( g_hConsoleWin );        
         DestroyWindow( g_hConsoleWin );
         g_hConsoleWin = NULL;
     }

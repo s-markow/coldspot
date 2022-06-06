@@ -1,5 +1,5 @@
 #include "logger.h"
-#include "../assert.h"
+#include "../c_assert.h"
 
 #include "sys/sys.h"
 
@@ -41,8 +41,8 @@ void Log_Printf( errType_t errType, const char *fmt, ... )
     char out[BUFFER_SIZE];
     va_list va_args;
 
-    Sys_Memset( buffer, 0, BUFFER_SIZE );
-    Sys_Memset( out, 0, BUFFER_SIZE );
+    Sys_MemSet( buffer, 0, BUFFER_SIZE );
+    Sys_MemSet( out, 0, BUFFER_SIZE );
 
     va_start( va_args, fmt );
     vsnprintf( buffer, BUFFER_SIZE, fmt, va_args );
